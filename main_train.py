@@ -56,6 +56,7 @@ def train(epochs, model, trainloader, crit, optimizer,scheduler, save_step, weig
                 os.mkdir('./save_model')
             #仅保存和加载模型参数
             torch.save(model.state_dict(), './save_model/model_{}.pth'.format(e + 1))
+            
 
 def main(**kwargs):
     opt.parse(kwargs)

@@ -10,6 +10,7 @@ import cv2
 import csv
 from shapely.geometry import Polygon
 
+
 def get_images(root):
     '''
     get images's path and name
@@ -45,6 +46,7 @@ def load_annoataion(p):
                 text_tags.append(True)
             else:
                 text_tags.append(False)
+
         return np.array(text_polys, dtype=np.float32), np.array(text_tags, dtype=np.bool)
 
 
@@ -90,6 +92,7 @@ def check_and_validate_polys(polys, tags, xxx_todo_changeme):
             poly = poly[(0, 3, 2, 1), :]
         validated_polys.append(poly)
         validated_tags.append(tag)
+
     return np.array(validated_polys), np.array(validated_tags)
 
 
@@ -569,7 +572,6 @@ def image_label(txt_root, image_list, img_name, index,
     '''
     get image's corresponding matrix and ground truth
     '''
-
     try:
         im_fn = image_list[index]
         im_name = img_name[index]
@@ -632,8 +634,8 @@ def image_label(txt_root, image_list, img_name, index,
 
     return images, score_maps, geo_maps, training_masks
 
-class ImageDataSet(data.Dataset):
 
+class ImageDataSet(data.Dataset):
     def __init__(self,img_root,txt_root):
         self.image_list,self.img_name = get_images(img_root)
         self.txt_root = txt_root
@@ -642,9 +644,9 @@ class ImageDataSet(data.Dataset):
         img,score_map,geo_map,training_mask = image_label(self.txt_root,self.image_list,self.img_name,index,input_size=512,random_scale=np.array([0.5,1,2.0,3.0]),background_ratio=3./8)
         return img,score_map,geo_map,training_mask
 
-
     def __len__(self):
         return len(self.image_list)
+
 
 def collate_fn(batch):
     img, score_map, geo_map, training_mask = zip(*batch)
@@ -673,5 +675,3 @@ def collate_fn(batch):
     training_masks = torch.stack(training_masks, 0)
 
     return images, score_maps, geo_maps, training_masks
-
-
