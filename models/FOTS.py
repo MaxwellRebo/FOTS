@@ -5,6 +5,8 @@ import torch
 import math
 
 MODE = "detection"
+
+
 class SharedConv(nn.Module):
     '''
     sharded convolutional layers
@@ -37,9 +39,7 @@ class SharedConv(nn.Module):
         self.angleMap = nn.Conv2d(32, 1, kernel_size = 1)
 
     def forward(self, input):
-
         input = self.__mean_image_subtraction(input)
-
         # bottom up
 
         f = self.__foward_backbone(input)
@@ -126,13 +126,11 @@ class SharedConv(nn.Module):
 
 
 class DummyLayer(nn.Module):
-
     def forward(self, input_f):
         return input_f
 
 
 class HLayer(nn.Module):
-
     def __init__(self, inputChannels, outputChannels):
         """
 
@@ -158,8 +156,9 @@ class HLayer(nn.Module):
         output = F.relu(output)
 
         return output
-class FOTS(nn.Module):
 
+
+class FOTS(nn.Module):
     def __init__(self):
         super(FOTS,self).__init__()
         self.mode = MODE
@@ -174,6 +173,7 @@ class FOTS(nn.Module):
         :return:
         '''
         score_map, geo_map = self.sharedConv.forward(input)
+
         if self.mode == 'detection':
             return score_map, geo_map, None
         elif self.mode == 'recognition':
@@ -182,10 +182,8 @@ class FOTS(nn.Module):
 
 
 class Recognizer(nn.Module):
-
     def __init__(self):
         super(Recognizer, self).__init__()
-
 
     def forward(self, *input):
         return None

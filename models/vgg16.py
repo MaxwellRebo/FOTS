@@ -9,16 +9,11 @@ model_url ='https://download.pytorch.org/models/vgg16-397923af.pth',
 
 
 def VGG16(pretrained=True):
-    """VGG is the vgg net
-    
-    
-    
-    
-    """
+    """VGG is the vgg net"""
     model =torchvision.models.vgg16(pretrained=pretrained)
+
     if  pretrained:
         return model
     model.load_state_dict(model_zoo.load_url(model_url))
+
     return model
-
-
