@@ -54,7 +54,6 @@ def train(epochs, model, trainloader, crit, optimizer,scheduler, save_step, weig
         if (e + 1) % save_step == 0:
             if not os.path.exists('./save_model'):
                 os.mkdir('./save_model')
-            #仅保存和加载模型参数
             torch.save(model.state_dict(), './save_model/model_{}.pth'.format(e + 1))
             
 
@@ -74,9 +73,9 @@ def main(**kwargs):
     if opt.use_gpu:
         model.cuda()
 
-    root_path = 'icdar_data'
-    train_img = root_path + 'images'
-    train_txt = root_path + 'labels'
+    root_path = '/data/icdar'
+    train_img = root_path
+    train_txt = root_path
     trainset = ImageDataSet(train_img, train_txt)
     trainloader = DataLoader(
         trainset, batch_size=opt.batch_size, shuffle=True, collate_fn=collate_fn, num_workers=opt.num_workers)
